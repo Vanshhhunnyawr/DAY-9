@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Red String of Fate</title>
+    <!-- Romantic Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0d0614;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- SCENE 1: THE PRETTY BACKGROUND & RED STRING --- */
+        #scene1 {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            /* Pretty Dreamy Background */
+            background: linear-gradient(135deg, #ffc2d4 0%, #ff7fa5 50%, #b8a4c9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        /* Ambient floating light particles */
+        #scene1::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: floatUp 20s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-400px); }
+        }
+
+        /* Photos Container */
+        .photo-container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 150px;
+            height: 200px;
+            border: 5px solid white;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            background: #fff;
+            overflow: hidden;
+            z-index: 10;
+            opacity: 0; /* Hidden initially */
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Slide in from Left (Her Photo) */
+        #her-photo {
+            left: -200px; /* Start off-screen */
+            animation: slideInLeft 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s;
+        }
+
+        /* Slide in from Right (Your Photo) */
+        #my-photo {
+            right: -200px; /* Start off-screen */
+            animation: slideInRight 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s;
+        }
+
+        @keyframes slideInLeft {
+            to { left: 15%; opacity: 1; transform: translateY(-50%) rotate(-5deg); }
+        }
+        @keyframes slideInRight {
+            to { right: 15%; opacity: 1; transform: translateY(-50%) rotate(5deg); }
+        }
+
+        /* The SVG Red Ribbon */
+        #ribbon-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5; /* Behind the photos */
+        }
+
+        .red-string {
+            fill: none;
+            stroke: #d90429;
+            stroke-width: 6;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 10px rgba(217, 4, 41, 0.6));
+            /* Animation setup */
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: drawRibbon 3s ease-in-out forwards 2s; /* Starts after images slide in */
+        }
+
+        @keyframes drawRibbon {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* --- SCENE 2: THE SCROLL & BUTTON --- */
+        #scene2 {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: #0d0614;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .break-btn {
+            padding: 20px 60px;
+            font-size: 1.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #d90429, #ff4d6d);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(217, 4, 41, 0.4);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .break-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Button Breaking Animation Classes */
+        .shatter-left {
+            animation: shatterL 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        .shatter-right {
+            animation: shatterR 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes shatterL {
+            0% { transform: translateX(0) rotate(0); opacity: 1; }
+            100% { transform: translate(-150px, -100px) rotate(-45deg); opacity: 0; }
+        }
+        @keyframes shatterR {
+            0% { transform: translateX(0) rotate(0); opacity: 1; }
+            100% { transform: translate(150px, 100px) rotate(45deg); opacity: 0; }
+        }
+
+        /* Wrapper to split the button in half for the break effect */
+        .btn-wrapper { display: flex; cursor: pointer; }
+        .btn-half {
+            padding: 20px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #d90429, #ff4d6d);
+            pointer-events: none;
+        }
+        .btn-half.left { border-radius: 5px 0 0 5px; }
+        .btn-half.right { border-radius: 0 5px 5px 0; border-left: 2px jagged #000; }
+
+        /* --- SCENE 3: THE VIDEO EDIT --- */
+        #video-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        #video-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        video {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(217, 4, 41, 0.5);
+        }
+
+        /* --- SCENE 4: THE TORN PAGE FINALE --- */
+        #finale-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #111;
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+        }
+
+        #finale-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .torn-page {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            background: #fdf5e6; /* Old paper color */
+            padding: 60px 40px;
+            text-align: center;
+            /* Jagged top and bottom edges simulating a torn piece of paper */
+            clip-path: polygon(
+                0% 4%, 5% 0%, 10% 5%, 15% 1%, 20% 6%, 25% 0%, 30% 5%, 35% 1%, 40% 6%, 45% 2%, 50% 6%, 55% 1%, 60% 5%, 65% 0%, 70% 6%, 75% 1%, 80% 5%, 85% 0%, 90% 6%, 95% 1%, 100% 5%, 
+                100% 95%, 95% 100%, 90% 94%, 85% 99%, 80% 95%, 75% 100%, 70% 94%, 65% 99%, 60% 95%, 55% 100%, 50% 94%, 45% 98%, 40% 94%, 35% 99%, 30% 95%, 25% 100%, 20% 94%, 15% 99%, 10% 95%, 5% 100%, 0% 96%
+            );
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            transform: scale(0.8);
+            transition: transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #finale-overlay.show .torn-page {
+            transform: scale(1);
+        }
+
+        .torn-page p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #331515; /* Dark ink color */
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .photo-container { width: 100px; height: 140px; }
+            .torn-page p { font-size: 2rem; }
+            @keyframes slideInLeft { to { left: 5%; opacity: 1; transform: translateY(-50%) rotate(-5deg); } }
+            @keyframes slideInRight { to { right: 5%; opacity: 1; transform: translateY(-50%) rotate(5deg); } }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SCENE 1: Background, Photos, and Ribbon -->
+    <div id="scene1">
+        
+        <!-- Her Photo (Left) -->
+        <div id="her-photo" class="photo-container">
+            <!-- Ensure this image is saved as her-photo.jpg in the same folder -->
+            <img src="her .jpeg" alt="Her Photo" onerror="this.style.background='#ff7fa5'">
+        </div>
+        
+        <!-- Ribbon SVG -->
+        <svg id="ribbon-container" preserveAspectRatio="none" viewBox="0 0 100 100">
+            <!-- Draws a curved path from 20% width to 80% width -->
+            <path class="red-string" d="M 20 50 C 40 20, 60 80, 80 50"></path>
+        </svg>
+
+        <!-- Your Photo (Right) -->
+        <div id="my-photo" class="photo-container">
+            <!-- Ensure this image is saved as my-photo.jpg in the same folder -->
+            <img src="me.jpeg" alt="My Photo" onerror="this.style.background='#b8a4c9'">
+        </div>
+
+    </div>
+
+    <!-- SCENE 2: The Break Button -->
+    <div id="scene2">
+        <div class="btn-wrapper" id="breakBtnGroup">
+            <div class="btn-half left" id="btnLeft">BRE</div>
+            <div class="btn-half right" id="btnRight">AK</div>
+        </div>
+    </div>
+
+    <!-- SCENE 3: The Video Edit (Hidden until button breaks) -->
+    <div id="video-overlay">
+        <!-- Ensure your edit is saved as your-edit.mp4 in the same folder -->
+        <video id="theEdit" src="heredit.mp4" controls playsinline></video>
+    </div>
+
+    <!-- SCENE 4: The Torn Page Finale (Hidden until video ends) -->
+    <div id="finale-overlay">
+        <div class="torn-page">
+            <p>i love you soooo muchh rubuuuu</p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const breakBtnGroup = document.getElementById('breakBtnGroup');
+        const btnLeft = document.getElementById('btnLeft');
+        const btnRight = document.getElementById('btnRight');
+        const videoOverlay = document.getElementById('video-overlay');
+        const videoPlayer = document.getElementById('theEdit');
+        const finaleOverlay = document.getElementById('finale-overlay');
+
+        // When she clicks the Break button
+        breakBtnGroup.addEventListener('click', () => {
+            // 1. Break Animation
+            btnLeft.classList.add('shatter-left');
+            btnRight.classList.add('shatter-right');
+            
+            // Lock scrolling
+            document.body.style.overflow = 'hidden';
+
+            // 2. Wait for break animation to finish, then show video
+            setTimeout(() => {
+                videoOverlay.classList.add('show');
+                // Auto-play the video (this works with sound because she just clicked the screen!)
+                videoPlayer.play();
+            }, 800);
+        });
+
+        // When the edit finishes playing
+        videoPlayer.addEventListener('ended', () => {
+            // Hide the video screen
+            videoOverlay.style.opacity = '0';
+            
+            // Wait for fade out, then show the torn page
+            setTimeout(() => {
+                finaleOverlay.classList.add('show');
+            }, 1000);
+        });
+    </script>
+
+</body>
+</html>
